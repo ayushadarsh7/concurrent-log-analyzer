@@ -1,4 +1,16 @@
-#define _GNU_SOURCE
+
+/* 
+    ---------------------
+         AA
+        A  A
+       AAAAAA
+      A      A
+     A        A
+    ---------------------
+    Created by Ayush Adarsh
+*/
+
+#define _GNU_SOURCE     // for strcasestr()
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,10 +20,7 @@
 #define MAX_LINE_LEN 8192
 #define NTHREADS 8
 
-/* 
- * Each function checks its own set of keywords in 'line'.
- * If a keyword is found (case‐insensitive), it writes 'line' into 'out'.
- */
+
 
 /* 1. Startup timing: look for "Startup finished in" or "Reached target" */
 void parse_startup_timing(const char *line, FILE *out) {
@@ -88,7 +97,7 @@ void parse_mount_fs(const char *line, FILE *out) {
 }
 
 int main(void) {
-    /* First, ensure "boot.log" exists and is readable */
+    
     FILE *fin_check = fopen("../boot.log", "r");
     if (!fin_check) {
         perror("Error: could not open boot.log");
@@ -96,13 +105,10 @@ int main(void) {
     }
     fclose(fin_check);
 
-    /* Ensure OpenMP uses exactly NTHREADS threads */
     omp_set_num_threads(NTHREADS);
 
-    /* Record start time */
     double start_time = omp_get_wtime();
 
-    /* Array of parser function pointers, one per thread */
     void (*parsers[NTHREADS])(const char *, FILE *) = {
         parse_startup_timing,
         parse_failed_services,
@@ -161,7 +167,6 @@ int main(void) {
         fclose(fout);
     }
 
-    /* Record end time and compute elapsed */
     double end_time = omp_get_wtime();
     double elapsed  = end_time - start_time;
 
