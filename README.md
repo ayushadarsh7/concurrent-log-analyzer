@@ -1,7 +1,7 @@
 
-# Log Analyzer with OpenMP
+# Boot Log Analyzer with OpenMP
 
-A parallel and non-parallel log analysis framework written in **C**, leveraging **OpenMP** for performance. This tool parses system log files (e.g., `boot.log`, `authentication.log`, etc.), detects anomalies using PCRE-based pattern matching, and stores issue-specific reports in separate output files.
+A parallel and non-parallel log analysis framework written in **C**, leveraging **OpenMP** for performance. This tool parses system boot log files, detects anomalies using PCRE-based pattern matching, and stores issue-specific reports in separate output files.
 
 ---
 
