@@ -5,7 +5,7 @@ A parallel and non-parallel log analysis framework written in **C**, leveraging 
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```bash
 .
@@ -31,7 +31,7 @@ A parallel and non-parallel log analysis framework written in **C**, leveraging 
 
 ---
 
-## 🔧 Requirements
+##  Requirements
 
 * GCC with OpenMP support
 * PCRE library
@@ -45,7 +45,7 @@ sudo apt install build-essential libpcre3-dev
 
 ---
 
-## 🚀 How to Use
+##  How to Use
 
 ### Step 1: Extract `boot.log`
 
@@ -78,7 +78,7 @@ python3 lines.py
 
 
 
-## ⚙️ Parallelism with OpenMP
+##  Parallelism with OpenMP
 
 The parallel version uses:
 
