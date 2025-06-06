@@ -89,6 +89,9 @@ omp_set_num_threads(NTHREADS);
 
 Each thread analyzes one type of log in parallel. Time is measured using `omp_get_wtime()` and logged in `time_taken.txt`.
 
+You can clearly see the difference in time taken by parallel and non-parallel(serialised) log parsing & analysis through the various time_taken.txt files in directories.
+It clearly shows that parallel algorithm takes considerably less time compared to serialised algorithm in log parsing and analysis.
+
 ---
 
 
