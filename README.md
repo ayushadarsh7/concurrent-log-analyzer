@@ -46,8 +46,12 @@ sudo apt install build-essential libpcre3-dev
 ---
 
 ##  How to Use
+### Step 1: Clone the Repo
+```
+git clone https://github.com/ayushadarsh7/concurrent-log-analyzer
+```
 
-### Step 1: Extract `boot.log`
+### Step 2: Extract `boot.log`
 
 ```bash
 ./get_logs.sh
@@ -55,15 +59,15 @@ sudo apt install build-essential libpcre3-dev
 
 This runs `journalctl` and extracts logs into `boot.log`.
 
-### Step 2: Run the Parser
+### Step 3: Run the Parser
 
 Navigate to either the `parallel/` or `non_parallel/` folder.
 
 ```bash
 cd parallel
-./compile.sh        # compiles both parser and analyzer
+./compile.sh        # compiles parser and parses logs categorically in the directory  
 cd Log_Analyzer
-./compile.sh
+./compile.sh        # analyses various logs, flags the various issues & threats and stores them in individual files categorically, in the same directory.
 ```
 
 ### Step 3: View Outputs
