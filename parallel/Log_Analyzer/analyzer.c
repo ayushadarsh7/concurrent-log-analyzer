@@ -1,8 +1,18 @@
+/* 
+    ---------------------
+         AA
+        A  A
+       AAAAAA
+      A      A
+     A        A
+    ---------------------
+    Created by Ayush Adarsh
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pcre.h>
-#include <omp.h>    // for omp_get_wtime(), OpenMP pragmas
+#include <omp.h>    
 
 #define MAX_LINE    8192   // maximum characters per line
 #define OVECCOUNT   30     // enough for up to ~10 capture groups
@@ -27,9 +37,7 @@ typedef struct {
     const char **regex_patterns;  // NULL-terminated array of regex strings
 } Category;
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  1) “authentication.log” → look for failed-login/anomalous authentication
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *auth_patterns[] = {
     "(?i)Failed password for",
     "(?i)authentication failure",
@@ -39,9 +47,7 @@ static const char *auth_patterns[] = {
     NULL
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  2) “critical_errors.log” → kernel/customer-critical errors
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *crit_patterns[] = {
     "(?i)kernel panic",
     "(?i)panic:",
@@ -53,9 +59,7 @@ static const char *crit_patterns[] = {
     NULL
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  3) “failed_services.log” → service‐start failures
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *svc_patterns[] = {
     "(?i)Failed to start",
     "(?i)Dependency failed for",
@@ -66,9 +70,7 @@ static const char *svc_patterns[] = {
     NULL
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  4) “hardware_driver.log” → driver/hardware anomalies
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *hw_patterns[] = {
     "(?i)driver .* failed to load",
     "(?i)firmware .* failed",
@@ -80,9 +82,7 @@ static const char *hw_patterns[] = {
     NULL
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  5) “mount_fs.log” → filesystem/mount issues
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *fs_patterns[] = {
     "(?i)mount: .* failed",
     "(?i)fsck .* error",
@@ -94,9 +94,7 @@ static const char *fs_patterns[] = {
     NULL
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  6) “networking.log” → networking/DHCP/DNS anomalies
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *net_patterns[] = {
     "(?i)Link is down",
     "(?i)DHCPDISCOVER.*timeout",
@@ -111,9 +109,7 @@ static const char *net_patterns[] = {
     NULL
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  7) “startup_timing.log” → slow/problematic units
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *start_patterns[] = {
     "(?i)Start request repeated too quickly",
     "(?i)Timed out",
@@ -123,9 +119,7 @@ static const char *start_patterns[] = {
     NULL
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 //  8) “warnings.log” → general warning‐level messages
-// ─────────────────────────────────────────────────────────────────────────────
 static const char *warn_patterns[] = {
     "(?i)deprecated",
     "(?i)low memory",
@@ -141,7 +135,6 @@ static const char *warn_patterns[] = {
 };
 
 // Assemble all eight categories into an array of Category structs.
-// Input filenames are prefixed with "../" so they point to the parent folder.
 // Output filenames live in the current folder (Log_Analysis/).
 static Category categories[] = {
     { "../authentication.log",   "authentication_issues.log",   auth_patterns },
@@ -156,7 +149,6 @@ static Category categories[] = {
 
 int main(void)
 {
-    // Record start time using OpenMP
     double start_time = omp_get_wtime();
 
     int num_categories = sizeof(categories) / sizeof(categories[0]);
@@ -235,7 +227,6 @@ int main(void)
         fclose(fout);
     }
 
-    // Record end time
     double end_time = omp_get_wtime();
     double elapsed  = end_time - start_time;
 
