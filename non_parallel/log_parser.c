@@ -1,3 +1,13 @@
+/* 
+    ---------------------
+         AA
+        A  A
+       AAAAAA
+      A      A
+     A        A
+    ---------------------
+    Created by Ayush Adarsh
+*/
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,10 +17,7 @@
 
 #define MAX_LINE_LEN 8192
 
-/* 
- * Each function checks its own set of keywords in 'line'.
- * If a keyword is found (case‐insensitive), it writes 'line' into 'out'.
- */
+
 
 /* 1. Startup timing: look for "Startup finished in" or "Reached target" */
 void parse_startup_timing(const char *line, FILE *out) {
@@ -88,7 +95,6 @@ void parse_mount_fs(const char *line, FILE *out) {
 
 
 int main(void) {
-    /* Record start time (in seconds) */
     double start_time = omp_get_wtime();
 
     FILE *fin = fopen("../boot.log", "r");
@@ -110,7 +116,6 @@ int main(void) {
     if (!f_startup || !f_failed || !f_warnings || !f_crit_errors ||
         !f_hw_driver || !f_networking || !f_auth || !f_mount_fs) {
         perror("Error opening one of the output files");
-        /* Close any that succeeded */
         fclose(fin);
         if (f_startup)     fclose(f_startup);
         if (f_failed)      fclose(f_failed);
@@ -136,7 +141,6 @@ int main(void) {
         parse_mount_fs(line, f_mount_fs);
     }
 
-    /* Close all input/output files */
     fclose(fin);
     fclose(f_startup);
     fclose(f_failed);
@@ -147,11 +151,9 @@ int main(void) {
     fclose(f_auth);
     fclose(f_mount_fs);
 
-    /* Record end time and compute elapsed */
     double end_time   = omp_get_wtime();
     double elapsed    = end_time - start_time;
 
-    /* Write elapsed time (in seconds) to time_taken.txt (create/overwrite) */
     FILE *ftime = fopen("time_taken.txt", "w");
     if (!ftime) {
         perror("Error opening time_taken.txt");
